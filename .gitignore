@@ -1,0 +1,7 @@
+*
+!*.*
+!/test
+!/Makefile
+!/README*
+*.o
+*.dSYM
