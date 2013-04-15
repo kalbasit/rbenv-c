@@ -12,7 +12,7 @@ int main(int argc, char **argv) {
 
   char *command = *argv++;
 
-  if (!command || streq(command, "-h") || streq(command, "--help")) {
+  if (!command || streq(command, "") || streq(command, "-h") || streq(command, "--help")) {
     rbenv_print_help();
   } else if (streq(command, "-v")) {
     rbenv_print_version();
