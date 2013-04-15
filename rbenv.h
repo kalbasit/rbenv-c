@@ -18,6 +18,7 @@ void rbenv_initialize_hook_path();
 void rbenv_exec_subcommand(char *, char **);
 void rbenv_print_version();
 void rbenv_print_help();
+void rbenv_print_usage(char *);
 char *rbenv_subcommand_name(char *);
 
 char *rbenv_exepath;

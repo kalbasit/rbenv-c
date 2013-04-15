@@ -1,6 +1,6 @@
 CFLAGS=-g -Wall
 
-all: rbenv
+all: rbenv rbenv-hooks
 
 strarray.o: strarray.c strarray.h
 	$(CC) $(CFLAGS) -o strarray.o -c strarray.c
@@ -19,6 +19,12 @@ main.o: main.c
 
 rbenv: main.o rbenv.o strarray.o path.o exepath.o
 	$(CC) -o rbenv main.o rbenv.o strarray.o path.o exepath.o
+
+rbenv-hooks.o: rbenv-hooks.c
+	$(CC) $(CFLAGS) -o rbenv-hooks.o -c rbenv-hooks.c
+
+rbenv-hooks: rbenv-hooks.o rbenv.o strarray.o path.o exepath.o
+	$(CC) -o rbenv-hooks rbenv-hooks.o rbenv.o strarray.o path.o exepath.o
 
 clean:
 	rm -fr rbenv *.o *.dSYM test/*.o test/*.dSYM

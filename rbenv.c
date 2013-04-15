@@ -94,6 +94,11 @@ void rbenv_print_help() {
   run("rbenv-help", NULL);
 }
 
+void rbenv_print_usage(char *command) {
+  redirect_stdout_to_stderr();
+  run("rbenv-help", strarray("--usage", command, NULL));
+}
+
 char *rbenv_subcommand_name(char *command) {
   size_t size = strlen(command) + strlen("rbenv-") + 1;
   char *result = malloc(sizeof(char) * size);
