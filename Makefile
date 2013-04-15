@@ -27,7 +27,7 @@ rbenv-hooks: rbenv-hooks.o rbenv.o strarray.o path.o exepath.o
 	$(CC) -o rbenv-hooks rbenv-hooks.o rbenv.o strarray.o path.o exepath.o
 
 clean:
-	rm -fr rbenv *.o *.dSYM test/*.o test/*.dSYM
+	rm -fr rbenv rbenv-hooks test/test_path test/test_strarray *.o *.dSYM test/*.o test/*.dSYM
 
 test/test.o: test/test.c test/test.h
 	$(CC) $(CFLAGS) -o test/test.o -c test/test.c
