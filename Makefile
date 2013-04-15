@@ -41,3 +41,6 @@ test/test_strarray: test/test_strarray.c test/test.o strarray.o
 	test/test_strarray
 
 test: test/test_path test/test_strarray
+
+install: rbenv rbenv-hooks
+	cp rbenv rbenv-hooks $(HOME)/.rbenv/libexec
