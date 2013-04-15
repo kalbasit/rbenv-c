@@ -6,7 +6,10 @@ strarray.o: strarray.c strarray.h
 	$(CC) $(CFLAGS) -o strarray.o -c strarray.c
 
 path.o: path.c path.h strarray.o
-	$(CC) $(CFLAGS) -o path.o -c path.c strarray.o
+	$(CC) $(CFLAGS) -o path.o -c path.c
+
+exepath.o: exepath.c exepath.h
+	$(CC) $(CFLAGS) -o exepath.o -c exepath.c
 
 rbenv.o: rbenv.c rbenv.h
 	$(CC) $(CFLAGS) -o rbenv.o -c rbenv.c
@@ -14,8 +17,8 @@ rbenv.o: rbenv.c rbenv.h
 main.o: main.c
 	$(CC) $(CFLAGS) -o main.o -c main.c
 
-rbenv: main.o rbenv.o strarray.o path.o
-	$(CC) -o rbenv main.o rbenv.o strarray.o path.o
+rbenv: main.o rbenv.o strarray.o path.o exepath.o
+	$(CC) -o rbenv main.o rbenv.o strarray.o path.o exepath.o
 
 clean:
 	rm -fr rbenv *.o *.dSYM test/*.o test/*.dSYM

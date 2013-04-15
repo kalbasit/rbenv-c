@@ -6,9 +6,9 @@ static void cd_or_exit(char *);
 static char **make_argv(char *, char **);
 static void redirect_stdout_to_stderr();
 
-void rbenv_initialize(char *progname) {
-  if (!rbenv_progname) {
-    rbenv_progname = progname;
+void rbenv_initialize(char *argv0) {
+  if (!rbenv_exepath) {
+    rbenv_exepath = exepath(argv0);
     rbenv_initialize_debug_mode();
     rbenv_initialize_root();
     rbenv_initialize_dir();
@@ -50,7 +50,7 @@ void rbenv_initialize_dir() {
 
 void rbenv_initialize_path() {
   char **dirs = wildcard_paths(rbenv_root, "/plugins/", "*", "/bin", NULL);
-  dirs = strarray_unshift(dirs, abs_dirname(rbenv_progname));
+  dirs = strarray_unshift(dirs, abs_dirname(rbenv_exepath));
   dirs = strarray_push(dirs, strdup(default(getenv("PATH"), "")));
 
   char *path = strarray_join(dirs, ":");

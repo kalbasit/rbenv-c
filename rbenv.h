@@ -1,6 +1,7 @@
 #ifndef __RBENV_H__
 #define __RBENV_H__
 
+#include "exepath.h"
 #include "path.h"
 #include "strarray.h"
 #include <sys/types.h>
@@ -19,7 +20,7 @@ void rbenv_print_version();
 void rbenv_print_help();
 char *rbenv_subcommand_name(char *);
 
-char *rbenv_progname;
+char *rbenv_exepath;
 char *rbenv_root;
 char *rbenv_dir;
 

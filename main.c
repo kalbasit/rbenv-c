@@ -1,14 +1,14 @@
 #include "rbenv.h"
 
 int main(int argc, char **argv) {
-  char *progname = *argv++;
+  char *argv0 = *argv++;
 
   if (streq(*argv, "--debug")) {
     setenv("RBENV_DEBUG", "1", 1);
     argv++;
   }
 
-  rbenv_initialize(progname);
+  rbenv_initialize(argv0);
 
   char *command = *argv++;
 
