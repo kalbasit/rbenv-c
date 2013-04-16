@@ -113,7 +113,7 @@ char *trim_trailing_slash(char *string) {
   size_t offset = length - 1;
 
   if (length > 1 && result[offset] == '/') {
-    result[offset] = 0;
+    result[offset] = '\0';
   }
 
   return result;
