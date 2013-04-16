@@ -16,6 +16,7 @@ char **strarray_concat(char **, char**);
 char **strarray_push(char **, char *);
 char **strarray_unshift(char **, char *);
 char *strarray_join(char **, char *);
+char **strarray_split(char *, char *);
 
 #define strarray_each(array, string) \
     for (int keep = 1, \

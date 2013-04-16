@@ -98,3 +98,39 @@ char *strarray_join(char **array, char *join) {
 
   return result;
 }
+
+char **strarray_split(char *string, char *delimiter) {
+  char **result;
+  char *element;
+  size_t string_length = strlen(string);
+  size_t delimiter_length = strlen(delimiter);
+
+  if (delimiter_length) {
+    result = strarray(NULL);
+
+    if (string_length) {
+      char *search_string = string;
+
+      while (*search_string) {
+        size_t match_length = strcspn(search_string, delimiter);
+        element = calloc(match_length + 1, sizeof(char));
+        memcpy(element, search_string, match_length);
+        result = strarray_push(result, element);
+
+        search_string += match_length;
+        if (*search_string) search_string += delimiter_length;
+      }
+    }
+
+  } else {
+    result = strarray_alloc(string_length);
+
+    for (int i = 0; i < string_length; i++) {
+      element = calloc(2, sizeof(char));
+      element[0] = string[i];
+      result[i] = element;
+    }
+  }
+
+  return result;
+}

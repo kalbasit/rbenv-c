@@ -119,6 +119,37 @@ void test_strarray_join() {
   free(array);
 }
 
+void test_strarray_split() {
+  char **array = strarray_split("", "");
+  assert(strarray_len(array) == 0, "split empty string by empty delimiter");
+  strarray_free(array);
+
+  array = strarray_split("hello", "");
+  assert(strarray_len(array) == 5 &&
+         streq(array[0], "h") &&
+         streq(array[1], "e") &&
+         streq(array[2], "l") &&
+         streq(array[3], "l") &&
+         streq(array[4], "o") &&
+         array[5] == NULL, "split string by empty delimiter");
+  strarray_free(array);
+
+  array = strarray_split("hello world", " ");
+  assert(strarray_len(array) == 2 &&
+         streq(array[0], "hello") &&
+         streq(array[1], "world") &&
+         array[2] == NULL, "split two-word string by space delimiter");
+  strarray_free(array);
+
+  array = strarray_split("/usr/bin:/bin::", ":");
+  assert(strarray_len(array) == 3 &&
+         streq(array[0], "/usr/bin") &&
+         streq(array[1], "/bin") &&
+         streq(array[2], "") &&
+         array[3] == NULL, "split string with trailing delimiters");
+  strarray_free(array);
+}
+
 int main(int argc, char **argv) {
   begin();
 
@@ -129,6 +160,7 @@ int main(int argc, char **argv) {
   test_strarray_push();
   test_strarray_unshift();
   test_strarray_join();
+  test_strarray_split();
 
   end();
 }
