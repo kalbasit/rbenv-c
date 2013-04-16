@@ -1,39 +1,35 @@
 CFLAGS=-g -Wall
+COMMANDS=rbenv rbenv-hooks rbenv-version-file rbenv-version-file-read
+LIBRARIES=exepath.o path.o rbenv.o strarray.o
 
-all: rbenv rbenv-hooks rbenv-version-file rbenv-version-file-read
-
-strarray.o: strarray.c strarray.h
-	$(CC) $(CFLAGS) -o strarray.o -c strarray.c
-
-path.o: path.c path.h strarray.o
-	$(CC) $(CFLAGS) -o path.o -c path.c
+all: $(COMMANDS)
 
 exepath.o: exepath.c exepath.h
 	$(CC) $(CFLAGS) -o exepath.o -c exepath.c
 
+path.o: path.c path.h strarray.o
+	$(CC) $(CFLAGS) -o path.o -c path.c
+
 rbenv.o: rbenv.c rbenv.h
 	$(CC) $(CFLAGS) -o rbenv.o -c rbenv.c
 
-main.o: main.c
-	$(CC) $(CFLAGS) -o main.o -c main.c
+strarray.o: strarray.c strarray.h
+	$(CC) $(CFLAGS) -o strarray.o -c strarray.c
 
-rbenv: main.o rbenv.o strarray.o path.o exepath.o
-	$(CC) -o rbenv main.o rbenv.o strarray.o path.o exepath.o
+rbenv: main.c $(LIBRARIES)
+	$(CC) $(CFLAGS) -o rbenv main.c $(LIBRARIES)
 
-rbenv-hooks.o: rbenv-hooks.c
-	$(CC) $(CFLAGS) -o rbenv-hooks.o -c rbenv-hooks.c
+rbenv-hooks: rbenv-hooks.c $(LIBRARIES)
+	$(CC) $(CFLAGS) -o rbenv-hooks rbenv-hooks.c $(LIBRARIES)
 
-rbenv-hooks: rbenv-hooks.o rbenv.o strarray.o path.o exepath.o
-	$(CC) -o rbenv-hooks rbenv-hooks.o rbenv.o strarray.o path.o exepath.o
-
-rbenv-version-file: rbenv-version-file.c rbenv.o strarray.o path.o exepath.o
-	$(CC) $(CFLAGS) -o rbenv-version-file rbenv-version-file.c rbenv.o strarray.o path.o exepath.o
+rbenv-version-file: rbenv-version-file.c $(LIBRARIES)
+	$(CC) $(CFLAGS) -o rbenv-version-file rbenv-version-file.c $(LIBRARIES)
 
 rbenv-version-file-read: rbenv-version-file-read.c
 	$(CC) $(CFLAGS) -o rbenv-version-file-read rbenv-version-file-read.c
 
 clean:
-	rm -f rbenv rbenv-hooks rbenv-version-file rbenv-version-file-read
+	rm -f $(COMMANDS)
 	rm -fr test/test_path test/test_strarray *.o *.dSYM test/*.o test/*.dSYM
 
 test/test.o: test/test.c test/test.h
@@ -49,5 +45,5 @@ test/test_strarray: test/test_strarray.c test/test.o strarray.o
 
 test: test/test_path test/test_strarray
 
-install: rbenv rbenv-hooks rbenv-version-file rbenv-version-file-read
-	cp rbenv rbenv-hooks rbenv-version-file rbenv-version-file-read $(HOME)/.rbenv/libexec
+install: $(COMMANDS)
+	cp $(COMMANDS) $(HOME)/.rbenv/libexec
