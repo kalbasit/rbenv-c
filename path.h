@@ -20,5 +20,6 @@ int cd(char *);
 char *join_path(char *, char *);
 char **wildcard_paths(char *, ...);
 char *trim_trailing_slash(char *);
+void truncate_path(char *);
 
 #endif

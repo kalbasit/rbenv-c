@@ -118,3 +118,9 @@ char *trim_trailing_slash(char *string) {
 
   return result;
 }
+
+void truncate_path(char *path) {
+  if (!path) return;
+  char *slash = strrchr(path, '/');
+  path[slash ? slash - path : 0] = '\0';
+}

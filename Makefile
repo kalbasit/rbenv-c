@@ -1,6 +1,6 @@
 CFLAGS=-g -Wall
 
-all: rbenv rbenv-hooks rbenv-version-file-read
+all: rbenv rbenv-hooks rbenv-version-file rbenv-version-file-read
 
 strarray.o: strarray.c strarray.h
 	$(CC) $(CFLAGS) -o strarray.o -c strarray.c
@@ -26,11 +26,15 @@ rbenv-hooks.o: rbenv-hooks.c
 rbenv-hooks: rbenv-hooks.o rbenv.o strarray.o path.o exepath.o
 	$(CC) -o rbenv-hooks rbenv-hooks.o rbenv.o strarray.o path.o exepath.o
 
+rbenv-version-file: rbenv-version-file.c rbenv.o strarray.o path.o exepath.o
+	$(CC) $(CFLAGS) -o rbenv-version-file rbenv-version-file.c rbenv.o strarray.o path.o exepath.o
+
 rbenv-version-file-read: rbenv-version-file-read.c
 	$(CC) $(CFLAGS) -o rbenv-version-file-read rbenv-version-file-read.c
 
 clean:
-	rm -fr rbenv rbenv-hooks test/test_path test/test_strarray *.o *.dSYM test/*.o test/*.dSYM
+	rm -f rbenv rbenv-hooks rbenv-version-file rbenv-version-file-read
+	rm -fr test/test_path test/test_strarray *.o *.dSYM test/*.o test/*.dSYM
 
 test/test.o: test/test.c test/test.h
 	$(CC) $(CFLAGS) -o test/test.o -c test/test.c
@@ -45,5 +49,5 @@ test/test_strarray: test/test_strarray.c test/test.o strarray.o
 
 test: test/test_path test/test_strarray
 
-install: rbenv rbenv-hooks rbenv-version-file-read
-	cp rbenv rbenv-hooks rbenv-version-file-read $(HOME)/.rbenv/libexec
+install: rbenv rbenv-hooks rbenv-version-file rbenv-version-file-read
+	cp rbenv rbenv-hooks rbenv-version-file rbenv-version-file-read $(HOME)/.rbenv/libexec
