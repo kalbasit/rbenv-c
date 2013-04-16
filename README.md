@@ -5,6 +5,7 @@ Don't use it yet!
 ## Table of Contents
 
 * [How It Works](#how-it-works)
+* [How It Doesn't Work](#how-it-doesnt-work)
 * [Installing](#installing)
 * [Building](#building)
 * [Testing](#testing)
