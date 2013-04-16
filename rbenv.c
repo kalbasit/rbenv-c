@@ -1,5 +1,9 @@
 #include "rbenv.h"
 
+char *rbenv_exepath;
+char *rbenv_root;
+char *rbenv_dir;
+
 static int hasenv(char *);
 static int run(char *, char **);
 static void cd_or_exit(char *);

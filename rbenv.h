@@ -21,8 +21,8 @@ void rbenv_print_help();
 void rbenv_print_usage(char *);
 char *rbenv_subcommand_name(char *);
 
-char *rbenv_exepath;
-char *rbenv_root;
-char *rbenv_dir;
+extern char *rbenv_exepath;
+extern char *rbenv_root;
+extern char *rbenv_dir;
 
 #endif

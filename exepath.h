@@ -7,6 +7,6 @@
 
 #define exepath(argv0) (__exepath ? __exepath : (__exepath = _exepath(argv0)))
 char *_exepath(char *);
-char *__exepath;
+extern char *__exepath;
 
 #endif

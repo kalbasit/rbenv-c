@@ -1,5 +1,7 @@
 #include "exepath.h"
 
+char *__exepath;
+
 static char *exepath_argv0_fallback(char *argv0) {
   return strdup(argv0 ? argv0 : "(unknown)");
 }
