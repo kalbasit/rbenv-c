@@ -1,5 +1,5 @@
 CFLAGS=-g -Wall
-COMMANDS=rbenv rbenv-hooks rbenv-version-file rbenv-version-file-read
+COMMANDS=rbenv rbenv-hooks rbenv-version-file rbenv-version-file-read rbenv-which
 LIBRARIES=exepath.o path.o rbenv.o strarray.o
 
 all: $(COMMANDS)
@@ -27,6 +27,9 @@ rbenv-version-file: rbenv-version-file.c $(LIBRARIES)
 
 rbenv-version-file-read: rbenv-version-file-read.c
 	$(CC) $(CFLAGS) -o rbenv-version-file-read rbenv-version-file-read.c
+
+rbenv-which: rbenv-which.c $(LIBRARIES)
+	$(CC) $(CFLAGS) -o rbenv-which rbenv-which.c $(LIBRARIES)
 
 clean:
 	rm -f $(COMMANDS)

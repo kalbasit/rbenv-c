@@ -6,9 +6,11 @@ char *rbenv_dir;
 
 static int hasenv(char *);
 static int run(char *, char **);
+static int capture(char *, char **, char *, size_t);
 static void cd_or_exit(char *);
 static char **make_argv(char *, char **);
-static void redirect_stdout_to_stderr();
+static void redirect_stdout(int);
+static char *strip(char *);
 
 void rbenv_initialize(char *argv0) {
   if (!rbenv_exepath) {
@@ -93,14 +95,25 @@ void rbenv_print_version() {
 }
 
 void rbenv_print_help() {
-  redirect_stdout_to_stderr();
+  redirect_stdout(2);
   run("rbenv---version", NULL);
   run("rbenv-help", NULL);
 }
 
 void rbenv_print_usage(char *command) {
-  redirect_stdout_to_stderr();
+  redirect_stdout(2);
   run("rbenv-help", strarray("--usage", command, NULL));
+}
+
+char *rbenv_version_name() {
+  size_t size = 1024;
+  char *version_name = calloc(size, sizeof(char));
+
+  if (capture("rbenv-version-name", NULL, version_name, size - 1) == 0) {
+    return strip(version_name);
+  } else {
+    exit(1);
+  }
 }
 
 char *rbenv_subcommand_name(char *command) {
@@ -130,6 +143,28 @@ static int run(char *command, char **args) {
   }
 }
 
+static int capture(char *command, char **args, char *result, size_t result_size) {
+  int fd[2];
+  if (pipe(fd) == -1) abort();
+
+  int status;
+  pid_t pid = vfork();
+
+  if (pid == -1) {
+    abort();
+  } else if (pid == 0) {
+    redirect_stdout(fd[1]);
+    execvp(command, make_argv(command, args));
+    _exit(1);
+  } else {
+    close(fd[1]);
+    read(fd[0], result, result_size);
+    close(fd[0]);
+    wait(&status);
+    return status;
+  }
+}
+
 static void cd_or_exit(char *dir) {
   if (!cd(dir)) {
     fprintf(stderr, "rbenv: cannot change working directory to `%s'\n", dir);
@@ -143,7 +178,16 @@ static char **make_argv(char *command, char **args) {
   return argv;
 }
 
-static void redirect_stdout_to_stderr() {
+static void redirect_stdout(int fd) {
   close(1);
-  dup2(2, 1);
+  dup2(fd, 1);
+}
+
+static char *strip(char *string) {
+  int length = strlen(string);
+  while (length && string[length - 1] == '\n') {
+    string[length - 1] = '\0';
+    length--;
+  }
+  return string;
 }

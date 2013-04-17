@@ -19,10 +19,13 @@ void rbenv_exec_subcommand(char *, char **);
 void rbenv_print_version();
 void rbenv_print_help();
 void rbenv_print_usage(char *);
+char *rbenv_version_name();
 char *rbenv_subcommand_name(char *);
 
 extern char *rbenv_exepath;
 extern char *rbenv_root;
 extern char *rbenv_dir;
+
+#define provide_rbenv_completions() write(1, "\n# Provide rbenv completions\n", 0)
 
 #endif

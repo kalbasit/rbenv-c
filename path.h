@@ -11,15 +11,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 char *getpwd();
 char *dirname(char *);
 char *abs_dirname(char *);
+char *expand_path(char *);
 int cd(char *);
 char *join_path(char *, char *);
 char **wildcard_paths(char *, ...);
 char *trim_trailing_slash(char *);
 void truncate_path(char *);
+char *search_paths(char **, char *);
 
 #endif

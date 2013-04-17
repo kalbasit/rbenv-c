@@ -45,6 +45,12 @@ char *abs_dirname(char *path) {
   return dir;
 }
 
+char *expand_path(char *path) {
+  char *result, *resolved_path = NULL;
+  result = realpath(path, resolved_path);
+  return result ? result : path;
+}
+
 int cd(char *dir) {
   int fd = open(dir, O_RDONLY | O_DIRECTORY);
   if (fd == -1) return 0;
@@ -123,4 +129,24 @@ void truncate_path(char *path) {
   if (!path) return;
   char *slash = strrchr(path, '/');
   path[slash ? slash - path : 0] = '\0';
+}
+
+static int is_file(char *path) {
+  struct stat s;
+  return stat(path, &s) == 0 && S_ISREG(s.st_mode);
+}
+
+char *search_paths(char **paths, char *filename) {
+  char *result = NULL, *candidate;
+
+  strarray_each(paths, char *path) {
+    candidate = join_path(path, filename);
+    if (is_file(candidate)) {
+      result = candidate;
+      break;
+    }
+    free(candidate);
+  }
+
+  return result;
 }
