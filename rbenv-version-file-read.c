@@ -1,8 +1,5 @@
+#include <ctype.h>
 #include <stdio.h>
-
-static int whitespace(int c) {
-  return c == ' ' || c == '\t' || c == '\r' || c == '\n';
-}
 
 int main(int argc, char **argv) {
   int status = 1;
@@ -19,13 +16,13 @@ int main(int argc, char **argv) {
           c = 0;
           break;
         }
-      } while (whitespace(c));
+      } while (isspace(c));
 
       if (c) {
         fputc(c, stdout);
 
         while ((c = fgetc(file))) {
-          if (whitespace(c) || feof(file)) break;
+          if (isspace(c) || feof(file)) break;
           fputc(c, stdout);
           status = 0;
         }
